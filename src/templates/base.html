@@ -1,0 +1,212 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                <title>{% block title %}Blogs{% endblock title %}</title>
+                <link rel="stylesheet" href="{% static 'css/style.css'%}">
+                <script src="https://kit.fontawesome.com/5cda4146e8.js" crossorigin="anonymous"></script>
+                <link rel="shortcut icon" href="{% static 'images/blog-solid.ico' %}" type="image/x-icon">
+                    {% block header %}{% endblock header %}
+    </head>
+    <body class="bg-gray-200">
+        <header class="bg-gray-200 w-full border-b border-gray-200">
+            <nav class="container mx-auto py-1 max-w-7xl">
+                <!-- PC Menu -->
+                <div class="flex justify-between mx-4 md:mx-0 px-5">
+                    <!--图标+标题-->
+                    <div class="flex justify-between items-center">
+                        <a class="mr-4 py-3">
+                            <img class="w-10" src="{% static 'images/coding-svgrepo-com.svg' %}" alt="blog"></a>
+                            <span>袁嘉永</span>
+                        </div>
+                        <!-- 导航栏 -->
+                        <div class="hidden md:flex items-center space-x-4">
+                            <a class="py-5 px-3 text-fourth" href="{% url 'index' %}">
+                                <i class="fa fa-home"></i>
+                                首页</a>
+                            <a class="py-5 px-3 text-fourth" href="">
+                                <i class="fa fa-newspaper"></i>
+                                博文日志</a>
+                            <a class="py-5 px-3 text-fourth" href="{% url 'about' %}">
+                                <i class="fa fa-laptop"></i>
+                                关于我</a>
+                        </div>
+                        <!-- 搜索表单 -->
+                        <div class="hidden md:flex items-center space-x-4">
+                            
+                                <div class="relative flex items-center">
+                                    <input
+                                        class="bg-white h-10 px-5 pr-10 rounded-full text-sm focus:outline-none"
+                                        type="search"
+                                        name="q"
+                                        id="q"
+                                        autocomplete="off"
+                                        placeholder="搜索博文">
+                                        <button id="search-button" class="absolute right-2" type="submit">
+                                            <img class="w-8 h-8" src="{% static 'images/search-svgrepo-com.svg' %}" alt=""></button>
+                                        </div>
+                        
+                                    <div>
+                                        <a
+                                            href="{% url 'admin:core_post_add' %}"
+                                            class="bg-primary text-black text-sm py-2 px-4 rounded-full hover:bg-secondary">
+                                            <i class="fa fa-keyboard mr-3"></i>写文章</a>
+                                    </div>
+
+                                </div>
+                                <!-- 移动端按钮 -->
+                                <div class="mobile-menu-button md:hidden flex items-center">
+                                    <button>
+                                        <i class="fa fa-bars text-2xl"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <!-- Mobile Menu -->
+                            <div class="mobile-menu hidden md:hidden">
+                                <a class="block py-2 px-4 text-sm hover:bg-fourth hover:text-white" href="">首页</a>
+                                <a class="block py-2 px-4 text-sm hover:bg-fourth hover:text-white" href="">博文日志</a>
+                                <a class="block py-2 px-4 text-sm hover:bg-fourth hover:text-white" href="">关于我</a>
+                            </div>
+            </nav>
+        </header>
+        {% block breadcrumb %}
+            <!-- Breadcrumb -->
+            <nav class="py-3 px-5 bg-gray-50 text-fourth">
+                <div class="py-2 2xl:ml-[220px]">
+                    <ol class="inline-flex items-center space-x-1 md:space-x-3 text-sm">
+                        <li>
+                            <a href="">
+                                <i class="fa fa-home"></i>
+                                首页</a>
+                        </li>
+                        <li>
+                            <a href="">
+                                <i class="fa fa-chevron-right mr-2"></i>
+                                博文日志</a>
+                        </li>
+                        <li>
+                            <span class="text-gray-500">
+                                <i class="fa fa-chevron-right mr-2"></i>
+                                列表</span>
+                        </li>
+                    </ol>
+                </div>
+            </nav>
+        {% endblock breadcrumb %}
+        
+        {% block slider %}
+        {% endblock slider %}
+        {% block content %}{% endblock content %}
+        <!-- footer -->
+        <footer class="bg-fourth">
+            <!--其他信息 -->
+            <div
+                class="hidden container mx-auto py-4 md:flex justify-between text-white space-x-4">
+                <div class="w-1/4 ml-4">
+                    <h4 class="text-2xl font-bold mb-2">
+                        <i class="fa fa-home"></i>
+                        Blog</h4>
+                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Exercitationem
+                        obcaecati inventore</p>
+                </div>
+                <div class="w-1/4 mx-auto">
+                    <h4 class="font-bold mb-2">最新日志</h4>
+                    <ul>
+                        <li>
+                            <a href="">
+                                <i class="fa fa-chevron-right mr-2"></i>文章日职标题文本</a>
+                        </li>
+                        <li>
+                            <a href="">
+                                <i class="fa fa-chevron-right mr-2"></i>文章日职标题文本</a>
+                        </li>
+                        <li>
+                            <a href="">
+                                <i class="fa fa-chevron-right mr-2"></i>文章日职标题文本</a>
+                        </li>
+                        <li>
+                            <a href="">
+                                <i class="fa fa-chevron-right mr-2"></i>文章日职标题文本</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="w-1/4 mx-auto">
+                    <h4 class="font-bold mb-2">快速阅读</h4>
+                    <ul>
+                        <li>
+                            <a href="">
+                                <i class="fa fa-chevron-right mr-2"></i>文章日职标题文本</a>
+                        </li>
+                        <li>
+                            <a href="">
+                                <i class="fa fa-chevron-right mr-2"></i>文章日职标题文本</a>
+                        </li>
+                        <li>
+                            <a href="">
+                                <i class="fa fa-chevron-right mr-2"></i>文章日职标题文本</a>
+                        </li>
+                        <li>
+                            <a href="">
+                                <i class="fa fa-chevron-right mr-2"></i>文章日职标题文本</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="w-1/4 mx-auto">
+                    <h4 class="font-bold mb-2">快速链接</h4>
+                    <ul>
+                        <li>
+                            <a href="">
+                                <i class="fa fa-chevron-right mr-2"></i>文章日职标题文本</a>
+                        </li>
+                        <li>
+                            <a href="">
+                                <i class="fa fa-chevron-right mr-2"></i>文章日职标题文本</a>
+                        </li>
+                        <li>
+                            <a href="">
+                                <i class="fa fa-chevron-right mr-2"></i>文章日职标题文本</a>
+                        </li>
+                        <li>
+                            <a href="">
+                                <i class="fa fa-chevron-right mr-2"></i>文章日职标题文本</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <!-- 版权信息 -->
+            <div class="mx-auto text-center text-white bg-black">
+                <p>
+                    &copy; 2025 袁嘉永. 版权所有.
+                </p>
+            </div>
+        </footer>
+        {% block script %}
+
+        {% endblock script%}
+    </body>
+     <script>
+    const mobileMenuButton = document.querySelector('.mobile-menu-button button');
+    const mobileMenu = document.querySelector('.mobile-menu');
+    mobileMenuButton.addEventListener('click', () => {
+        mobileMenu.classList.toggle('hidden');
+    });
+
+    const searchButton = document.getElementById('search-button');
+    const searchInput = document.getElementById('q');
+    searchButton.addEventListener('click', () => {
+        fetch(`?q=${searchInput.value}`, {
+            headers: {
+            'X-Requested-With': 'XMLHttpRequest'
+        }
+    })
+    .then(response => response.json())
+    .then(data => { 
+        document.getElementById('posts-container').innerHTML = data.html;
+        history.pushState({}, '', `?q=${searchInput.value}`);
+    });
+    }
+    );
+</script>
+</html>

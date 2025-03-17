@@ -1,0 +1,233 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+{% block title %}
+    {{post.title}}
+{% endblock title %}
+
+{% block breadcrumb %}
+<nav class="py-3 px-5 bg-gray-50 text-fourth">
+    <div class="py-2 2xl:ml-[220px]">
+        <ol class="inline-flex items-center space-x-1 md:space-x-3 text-sm">
+            <li>
+                <a href="{% url 'index' %}">
+                    <i class="fa fa-home"></i>
+                    首页</a>
+            </li>
+            <li>
+                <a href="">
+                    <i class="fa fa-chevron-right mr-2"></i>
+                    博文日志</a>
+            </li>
+            <li>
+                <span class="text-gray-500">
+                    <i class="fa fa-chevron-right mr-2"></i>
+                正文</span>
+            </li>
+        </ol>
+    </div>
+</nav>
+{% endblock breadcrumb %}
+
+{% block content %}
+<!-- main content -->
+<main class="container mx-auto my-4 flex flex-col md:flex-row items-start">
+    <!-- 左侧内容 -->
+    <div class="w-full p-4 bg-white md:w-3/4 md:mr-4">
+        <p><span class="bg-primary text-white px-4 py-1 test-sm">{{post.category.name}}</span></p>
+        <!-- 文章标题 -->
+        <h1 class="text-4xl font-light my-4">{{post.title}}</h1>
+        <!-- 文章作者 -->
+        <div class="flex justify-between text-sm text-gray-400">
+            <div class="flex items-center">
+                <img src="{{post.author.avatar.url}}" alt="" class="rounded-full mr-2 w-10 h-10">
+                <span>{{post.author.name}}</span>
+                <span class="ml-4"><i class="fas fa-clock"></i>{{post.created_at|date:"Y-m-d"}}</span>
+            </div>
+            <div class="flex items-center">
+                <span class="mr-4"><i class="fas fa-eye"></i>{{post.views}}</span>
+                <span><i class="fas fa-comment"></i>100</span>
+            </div>
+        </div>
+        <!-- 文章内容 -->
+        <div class="my-6 space-y-4">
+            <img src="https://picsum.photos/800/400" alt="" class="w-full">
+            {{post.content|safe}}
+        </div>
+        <!-- 标签 -->
+      <div class="my-4 border-y py-6 space-x-2 text-sm">
+        
+        <span>
+            <i class="fa-solid fa-tags"></i>
+            标签:
+        </span>
+        {% for tag in post.get_tags_list %}
+         <span class="bg-black text-white px-4 py-1 test-sm rounded-md">{{ tag }}</span>
+        {% endfor %}
+      </div>
+
+      <!-- 上一篇 下一篇 -->
+       <div class="my-6 flex flex-col md:flex-row justify-between">
+        <!-- 上一篇 -->
+            <div class="flex w-full md:w-1/2 justify-between items-center space-x-2 md:border-r">
+                <div class="w-1/4">
+                    <img src="{{last_post.image}}" alt="">
+                </div>
+                <div class="w-3/4">
+                    <div class="text-sm">
+                        <i class="fas fa-caret-left text-primary"></i>
+                        上一篇
+                    </div>
+                    <h4></h4><a href="{% url 'details' last_post.id%}">{{last_post.title}}</a></h4>
+                    
+
+                </div>
+            </div>
+             <!-- 下一篇 -->
+             <div class="flex w-full md:w-1/2 justify-between items-center space-x-2 md:border-r">
+                <div class="w-3/4 md:justify-end md:text-right">
+                    
+                    <div class="text-sm">
+                        下一篇
+                        <i class="fas fa-caret-right text-primary"></i>
+                    </div>
+                    <h4><a href="{% url 'details' next_post.id%}">{{next_post.title}}</a></h4>
+
+                </div>
+                <div class="w-1/4">
+                    <img src="{{next_post.image}}" alt="">
+                </div>
+            </div>
+       </div>
+    </div>
+
+    <!-- 右侧内容 -->
+    <div class="w-full bg-white p-2 md:w-1/4">
+        <!-- 天气 -->
+        <div class="w-full mb-8 relative">
+            <img class="w-full" src="https://picsum.photos/id/125/400/300" alt="">
+            <div class="absolute top-6 left-12 text-white">
+                <div class="text-xl mb-2">天气</div>
+                <div class="text-4xl mb-2">晴</div>
+                <div class="text-xl font-light">23℃</div>
+            </div>
+        </div>
+
+        <!-- 分类 -->
+         <div class="mb-8">
+            <h4 class="text-xl font-bold mb-3 border-b py-2">
+                <span class="border-b-4 border-b-red-500">文章分类</span>
+            </h4>
+            <ul class="mb-6">
+                <li class="mb-2 border-b pb-2 border-dotted">
+                    <a href="" class="flex justify-between items-center">
+                        <span>心情随笔</span>
+                        <span class="bg-red-400 text-sm px-2 py-1 rounded-md">100</span>
+                    </a>
+                </li>
+                <li class="mb-2 border-b pb-2 border-dotted">
+                    <a href="" class="flex justify-between items-center">
+                        <span>心情随笔</span>
+                        <span class="bg-red-400 text-sm px-2 py-1 rounded-md">100</span>
+                    </a>
+                </li>
+                <li class="mb-2 border-b pb-2 border-dotted">
+                    <a href="" class="flex justify-between items-center">
+                        <span>心情随笔</span>
+                        <span class="bg-red-400 text-sm px-2 py-1 rounded-md">100</span>
+                    </a>
+                </li>
+                <li class="mb-2 border-b pb-2 border-dotted">
+                    <a href="" class="flex justify-between items-center">
+                        <span>心情随笔</span>
+                        <span class="bg-red-400 text-sm px-2 py-1 rounded-md">100</span>
+                    </a>
+                </li>
+            </ul>
+         </div>
+
+         <!-- 推荐阅读 -->
+         <div class="mb-8">
+            <h4 class="text-xl font-bold mb-3 border-b py-2">
+                <span class="border-b-4 border-b-red-500">推荐阅读</span>
+            </h4>
+            <ul class="mb-6">
+                <li class="mb-2 border-b pb-2 border-dotted">
+                    <i class="fa fa-chevron-right mr-2 text-gray-500"></i>
+                    <a href="">
+                        文章标题
+                    </a>
+                </li>
+                <li class="mb-2 border-b pb-2 border-dotted">
+                    <i class="fa fa-chevron-right mr-2 text-gray-500"></i>
+                    <a href="">
+                        文章标题
+                    </a>
+                </li>
+                <li class="mb-2 border-b pb-2 border-dotted">
+                    <i class="fa fa-chevron-right mr-2 text-gray-500"></i>
+                    <a href="">
+                        文章标题
+                    </a>
+                </li>
+            </ul>
+            
+            
+         </div>
+
+         <!-- 热门文章 -->
+         <div class="mb-8">
+            <h4 class="text-xl font-bold mb-3 border-b py-2">
+                <span class="border-b-4 border-b-red-500">推荐阅读</span>
+            </h4>
+            <ul class="mb-6">
+                <li class="mb-2 border-b pb-2 border-dotted">
+                    <i class="fa fa-chevron-right mr-2 text-gray-500"></i>
+                    <a href="">
+                        文章标题
+                    </a>
+                </li>
+                <li class="mb-2 border-b pb-2 border-dotted">
+                    <i class="fa fa-chevron-right mr-2 text-gray-500"></i>
+                    <a href="">
+                        文章标题
+                    </a>
+                </li>
+                <li class="mb-2 border-b pb-2 border-dotted">
+                    <i class="fa fa-chevron-right mr-2 text-gray-500"></i>
+                    <a href="">
+                        文章标题
+                    </a>
+                </li>
+            </ul>
+            
+            <!-- 热门标签 -->
+            <div class="mb-8">
+                <h4 class="text-xl font-bold mb-3 border-b py-2">
+                    <span class="border-b-4 border-b-red-500">热门标签</span>
+                </h4>
+                <div class="grid grid-cols-2 gap-2 text-center">
+                    <a href="" class="bg-black text-white px-3 py-1 rounded-md">
+                        <i class="fa-brands fa-python"></i>
+                        Python
+                    </a>
+                    <a href="" class="bg-black text-white px-3 py-1 rounded-md">
+                        <i class="fa-brands fa-python"></i>
+                        Django
+                    </a>
+                    <a href="" class="bg-black text-white px-3 py-1 rounded-md">
+                        <i class="fa-brands fa-python"></i>
+                        Flask
+                    </a>
+                    <a href="" class="bg-black text-white px-3 py-1 rounded-md">
+                        <i class="fa-brands fa-python"></i>
+                        FastAPI
+                    </a>
+                    
+                </div>
+            </div>
+         </div>
+    </div>
+</main>
+{% endblock content %}
