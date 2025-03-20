@@ -1,22 +1,23 @@
+{% load core_filters %}
 {% if page_obj %}
     {% for post in page_obj %}
     <div class="flex flex-col md:flex-row items-center justify-between">
         <div class="relative w-full md:w-1/4 mr-4">
-            <img class="w-full object-cover h-[160px] md:h-auto" src="{{ post.image }}" alt="Slider Image">
+            <img class="w-full object-cover h-[160px] md:h-auto" src="{{ post.image.url }}" alt="Slider Image">
             <span class="absolute top-0 left-0 bg-black text-white px-2 py-1 text-sm">{{ post.category.name }}</span>
         </div>
         <div class="w-full md:w-3/4">
-            <h3 class="text-2xl font-bold"><a href="{% url 'details' post.id %}">{{ post.title }}</a></h3>
+            <h3 class="text-2xl font-bold"><a href="{% url 'details' post.slug %}">{{ post.title }}</a></h3>
             <p class="text-gray-500 text-sm mt-1">
                 <i class="fa fa-clock"></i>{{ post.created_at|date:"Y-m-d" }}</p>
             <p class="text-gray-500 mt-2 text-sm">{{ post.summary }}</p>
             <div class="flex items-center justify-between mt-2">
                 <div class="flex items-center">
-                    <img class="w-7 rounded-full" src="{{ post.author.avatar.url }}" alt="">
+                    <img class="w-7 h-7 rounded-full" src="{{ post.author.avatar.url }}" alt="">
                     <span>{{ post.author.name }}</span>
                 </div>
                 <div class="flex items-center space-x-2 text-sm">
-                    <span><i class="fa fa-comment"></i>100</span>
+                    <span><i class="fa fa-comment"></i>{{ post.comments.all|comment_count }}</span>
                     <span><i class="fa fa-eye"></i>{{ post.views }}</span>
                 </div>
             </div>
@@ -30,7 +31,7 @@
     </div>
 {% endif %}
 
-<div class="flex justify-center items-center text-sm space-x-4">
+<div class="flex justify-center items-center text-sm space-x-4 mb-4">
     <!-- 上一页-->
     {% if page_obj.has_previous %}
         <a href="?page={{ page_obj.previous_page_number }}" class="bg-secondary text-white px-4 py-2 ml-4 rounded-md inline-flex items-center">
@@ -48,8 +49,7 @@
         </a>
     {% endif %}
 
-    <!-- 总页数-->
-    <span class="bg-secondary text-white px-4 py-2 mr-4 rounded-md inline-flex items-center">总页数：{{ page_obj.paginator.num_pages }}</span>
+   
     <!-- 搜索框 -->
     <input type="text" class="p-1 rounded-md border-2 border-red-600" placeholder="输入调整页数" id="page">
     <!-- 搜索按钮 -->
@@ -57,4 +57,13 @@
         <i class="fa fa-search text-sm mr-1"></i>
         跳转
     </button>
+</div>
+<div class="flex justify-center items-center text-sm space-x-4">
+ <!-- 总页数-->
+ <span class="px-4 py-2 mr-4 rounded-md inline-flex items-center">
+    总页数：{{ page_obj.paginator.num_pages }}
+</span>
+<span class="px-4 py-2 mr-4 rounded-md inline-flex items-center">
+    总条数：{{ page_obj.paginator.count }}
+</span>
 </div>

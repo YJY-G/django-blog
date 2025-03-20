@@ -1,0 +1,13 @@
+{% for comment in comments %}
+<div class="flex my-4">
+    <div class="mr-2 items-center">
+        <div class="w-10 h-10 bg-orange-500 rounded-full text-xl text-white flex items-center justify-center">{{comment.name|first}}</div>
+    </div>
+    <div>
+        <h4 class="text-sm">{{comment.name}}</h4>
+        <p class="text-sm space-x-4"><span>{{comment.created_at|date:"Y-m-d H:i:s"}}</span></span></p>
+        <p class="my-2 text-sm">{{comment.body}}</p>
+    </div>
+</div>
+<hr>
+{% endfor %}

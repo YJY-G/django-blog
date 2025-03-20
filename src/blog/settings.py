@@ -29,9 +29,16 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+        'LOCATION': 'unique-snowflake',
+    }
+}
 
 # Application definition
-
+DEFAULT_CHARSET = 'utf-8'
+SESSION_EXPIRE_AT_BROWSER_CLOSE = False  # 设置为 False 才不会在浏览器关闭时清除
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -41,7 +48,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'core',
     'resume',
-    'django_summernote',
+    'markdownx',
+    'taggit',
 ]
 
 MIDDLEWARE = [
@@ -139,31 +147,46 @@ MEDIA_ROOT = BASE_DIR / 'media'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-# Summernote配置
-SUMMERNOTE_CONFIG = {
-    # 设置编辑器的大小
-    'width': '100%',
-    'height': '480',
+# # Summernote配置
+# SUMMERNOTE_CONFIG = {
+#     # 设置编辑器的大小
+#     'width': '600px',
+#     'height': '1080px',
     
-    # 上传图片大小限制 (单位: 字节)
-    'attachment_filesize_limit': 5 * 1024 * 1024,  # 5MB
+#     # 上传图片大小限制 (单位: 字节)
+#     'attachment_filesize_limit': 5 * 1024 * 1024,  # 5MB
     
-    # 上传图片格式限制
-    'attachment_file_types': ['image/jpeg', 'image/jpg', 'image/png', 'image/gif'],
+#     # 上传图片格式限制
+#     'attachment_file_types': ['image/jpeg', 'image/jpg', 'image/png', 'image/gif'],
     
-    # 自定义工具栏
-    'toolbar': [
-        ['style', ['style']],
-        ['font', ['bold', 'underline', 'clear']],
-        ['color', ['color']],
-        ['para', ['ul', 'ol', 'paragraph']],
-        ['table', ['table']],
-        ['insert', ['link', 'picture', 'video']],
-        ['view', ['fullscreen', 'codeview', 'help']],
-    ],
+#     # 自定义工具栏
+#     'toolbar': [
+#         ['style', ['style']],
+#         ['font', ['bold', 'underline', 'clear']],
+#         ['color', ['color']],
+#         ['para', ['ul', 'ol', 'paragraph']],
+#         ['table', ['table']],
+#         ['insert', ['link', 'picture', 'video']],
+#         ['view', ['fullscreen', 'codeview', 'help']],
+#     ],
     
-    # 上传处理设置
-    'attachment_upload_to': 'summernote/%Y/%m/%d/',
+#     # 上传处理设置
+#     'attachment_upload_to': 'summernote/%Y/%m/%d/',
+# }
+
+# Markdownx 扩展配置
+MARKDOWNX_MARKDOWN_EXTENSIONS = [
+    'markdown.extensions.extra',  # 包含多种有用的扩展
+    'markdown.extensions.codehilite',  # 代码高亮
+    'markdown.extensions.fenced_code',  # 围栏式代码块
+    # 其他需要的扩展...
+]
+
+MARKDOWNX_MARKDOWN_EXTENSIONS_CONFIGS = {
+    'markdown.extensions.codehilite': {
+        'linenums': True,  # 显示行号
+        'guess_lang': False,  # 不自动猜测语言
+        'css_class': 'codehilite',  # CSS 类名
+        'pygments_style': 'monokai',  # 指定风格（仅在内部渲染时有效）
+    },
 }
-
-

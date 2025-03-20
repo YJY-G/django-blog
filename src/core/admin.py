@@ -1,28 +1,30 @@
 from django.contrib import admin
-from .models import Category, Post
-from django_summernote.widgets import SummernoteWidget
-from django import forms
+from .models import Category, Post,Comment
+from markdownx.admin import MarkdownxModelAdmin
 
-class PostForm(forms.ModelForm):
-    class Meta:
-        model = Post
-        fields = '__all__'
-        widgets = {
-            'summary': forms.Textarea(),
-            'content': SummernoteWidget(),
+
+class PostAdmin(MarkdownxModelAdmin):
+    class Media:
+        css = {
+            'all': ('css/pygments-monokai.css',)
         }
-
-class PostAdmin(admin.ModelAdmin):
-    form = PostForm
-    list_display = ('title', 'slug', 'created_at', 'updated_at', 'status')
-    list_filter = ('status', 'created_at', 'updated_at')
-    search_fields = ('title', 'content')
-    prepopulated_fields = {'slug': ('title',)}
+        js = ('admin/js/markdownx-enhance.js',
+              'admin/js/markdownx-clipboard.js',
+              )
 
 
 class CategoryAdmin(admin.ModelAdmin):
     list_display = ('name', 'slug', 'order')
     prepopulated_fields = {'slug': ('name',)}
 
+
+class CommentAdmin(admin.ModelAdmin):
+    list_display = ('post', 'name', 'ip','active','created_at')
+    list_filter = ('active','created_at')
+    ordering = ('-created_at',)
+
 admin.site.register(Category, CategoryAdmin)
 admin.site.register(Post, PostAdmin)
+admin.site.register(Comment, CommentAdmin)
+
+

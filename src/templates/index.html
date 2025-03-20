@@ -19,26 +19,27 @@
 <main class="container mx-auto my-4 flex flex-col md:flex-row items-start">
     <!-- 左侧内容 -->
     <div class="w-full bg-white p-2 md:w-3/4 md:mr-4">
-        <div class="flex mb-4" id="category-bar">
-            <div class="border border-black px-2 py-2 w-20 text-center bg-gray-700 text-white category {% if not request.GET.category %}bg-gray-700{% endif %}" onclick="changeCategory(this, '')" data-category="">
+        <div class="flex mb-1" id="category-bar">
+            <div class="border border-black px-2 py-2 w-20 text-center bg-gray-700 text-white category {% if not request.GET.category %}bg-gray-700{% endif %}" onclick="changeCategory(this, '', true)" data-category="">
                 全部
             </div>
             {% for category in categories%}
-            <div class="border border-black px-2 py-2 w-20 text-center bg-gray-500 text-white category {% if request.GET.category == category.id|stringformat:'s' %}bg-gray-700{% endif %}" onclick="changeCategory(this, '{{category.id}}')" data-category="{{category.id}}">
+            <div class="border border-black px-2 py-2 w-20 text-center bg-gray-500 text-white category {% if request.GET.category == category.id|stringformat:'s' %}bg-gray-700{% endif %}" onclick="changeCategory(this, '{{category.id}}', true)" data-category="{{category.id}}">
                 {{category}}
             </div>
             {%endfor%}
         </div>
+        <!-- 分割线 -->
+        <div class="border-b-2 border-orange-500 mb-2"></div>
         <!-- article item -->
         <div class="ml-2 md:ml-0" id="posts-container">
             {% include 'post_list.html' %}
         </div>
-        
-
+       
     </div>
 
     <!-- 右侧内容 -->
-    <div class="w-full bg-white p-2 md:w-1/4">
+    <div class="w-full bg-white p-2 md:w-1/4 sticky top-4">
         <!-- 天气 -->
         <div class="w-full mb-8 relative">
             <img class="w-full" src="https://picsum.photos/id/125/400/300" alt="">
@@ -54,31 +55,15 @@
             <h4 class="text-xl font-bold mb-3 border-b py-2">
                 <span class="border-b-4 border-b-red-500">文章分类</span>
             </h4>
-            <ul class="mb-6">
+            <ul class="mb-6 space-y-2">
+                {% for category in categories %}
                 <li class="mb-2 border-b pb-2 border-dotted">
-                    <a href="" class="flex justify-between items-center">
-                        <span>心情随笔</span>
-                        <span class="bg-red-400 text-sm px-2 py-1 rounded-md">100</span>
+                    <a href="#" class="flex justify-between items-center" onclick="changeCategory(this, '{{category.id}}', false)" data-category="{{category.id}}">
+                        <span>{{category.name}}</span>
+                        <span class="bg-red-400 text-sm px-2 py-1 rounded-sm">{{category.posts.count}}</span>
                     </a>
                 </li>
-                <li class="mb-2 border-b pb-2 border-dotted">
-                    <a href="" class="flex justify-between items-center">
-                        <span>心情随笔</span>
-                        <span class="bg-red-400 text-sm px-2 py-1 rounded-md">100</span>
-                    </a>
-                </li>
-                <li class="mb-2 border-b pb-2 border-dotted">
-                    <a href="" class="flex justify-between items-center">
-                        <span>心情随笔</span>
-                        <span class="bg-red-400 text-sm px-2 py-1 rounded-md">100</span>
-                    </a>
-                </li>
-                <li class="mb-2 border-b pb-2 border-dotted">
-                    <a href="" class="flex justify-between items-center">
-                        <span>心情随笔</span>
-                        <span class="bg-red-400 text-sm px-2 py-1 rounded-md">100</span>
-                    </a>
-                </li>
+                {% endfor %}
             </ul>
          </div>
 
@@ -177,18 +162,21 @@
         window.location.href = `?page=${page}`;
     }
 
-    function changeCategory(element, categoryId) {
-        // 移除所有 div 的背景色
-        const categories = document.getElementsByClassName("category");
-        for (let item of categories) {
-            item.classList.remove('bg-gray-700');
-            item.classList.add('bg-gray-500');
+    function changeCategory(element, categoryId, updateStyle) {
+        event.preventDefault();
+        
+        if (updateStyle) {
+            // 只有当 updateStyle 为 true 时才更新样式（左侧分类栏）
+            const categories = document.getElementsByClassName("category");
+            for (let item of categories) {
+                item.classList.remove('bg-gray-700');
+                item.classList.add('bg-gray-500');
+            }
+            element.classList.remove('bg-gray-500');
+            element.classList.add('bg-gray-700');
         }
-        // 给当前点击的 div 添加背景色
-        element.classList.remove('bg-gray-500');
-        element.classList.add('bg-gray-700');
 
-        // 使用 fetch 发送 AJAX 请求
+        // AJAX 请求部分保持不变
         fetch(`?category=${categoryId}`, {
             headers: {
                 'X-Requested-With': 'XMLHttpRequest'
@@ -196,9 +184,7 @@
         })
         .then(response => response.json())
         .then(data => {
-            // 更新文章列表内容
             document.getElementById('posts-container').innerHTML = data.html;
-            // 更新 URL，但不刷新页面
             history.pushState({}, '', `?category=${categoryId}`);
         });
     }
